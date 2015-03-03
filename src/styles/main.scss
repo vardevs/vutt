@@ -1,0 +1,92 @@
+@import "./normalize.css";
+
+$bg-color: #181818;
+$fg-color: #ffffff;
+$primary-color: green;
+
+$line-height: 1rem;
+
+html {
+  font-size: 18px;
+}
+
+body {
+  font-size: 1rem;
+
+  font-family: monospace;
+  background-color: $bg-color;
+  color: $fg-color;
+}
+
+h1 {
+  color: $primary-color;
+}
+
+.viewport {
+}
+
+.meta {
+  color: turquoise;
+  p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+p.attachment {
+  margin-top: 1rem;
+  color: yellow;
+}
+
+p.type {
+  margin-bottom: 1rem;
+  color: yellow;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+  white-space: pre-wrap;       /* CSS 3 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.hidden {
+  display: none;
+}
+
+.text-after {
+  margin-right: 2rem;
+}
+
+.align-right {
+  text-align: right;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  max-height: $line-height * 5;
+  overflow-y: auto;
+}
+
+footer {
+  background-color: #323232;
+  margin-top: auto;
+  bottom: 0;
+}
+
+li {
+  list-style-type: none;
+
+  label {
+    padding: 0 10px;
+  }
+}
+
+.active-thread {
+  background-color: $fg-color;
+  color: $bg-color;
+}
