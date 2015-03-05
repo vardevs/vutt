@@ -38,7 +38,7 @@ called «vardevs».
   - DNS: Domain name management (order/renewal/transfer)
   - CDN: Content delivery networks
 
-If you need anything, I am always available at «viktor@vardevs.se».
+Just hit 'r' or click on 'r:Reply' at the top to get in touch!
 
 /v.
 `
@@ -47,7 +47,7 @@ If you need anything, I am always available at «viktor@vardevs.se».
     id: 2,
     date: new Date(2015, 3, 3, 18, 0, 0, 0),
     from: 'viktor@vardevs.se',
-    to: 'you@you.com',
+    to: 'You',
     subject: 'Curriculum Vitae',
     body: `Hi
 
@@ -59,14 +59,38 @@ Just thought I would drop you a link to my CV:
 `
   },
   {
-    id: 2,
+    id: 3,
     date: new Date(2015, 3, 3, 12, 52, 0, 0),
     from: 'asdu281@yahoo.com',
-    to: 'you@you.com',
-    subject: '[SPAM] FW: Rich man',
-    body: `Compliments to you Rick Man!
+    to: 'You',
+    subject: '[SPAM] FW: rich man',
+    body: `compliments to you rick man!
 
-Very much congratulations! You have lottery ticket winning 10'000'000 EUR!`
+very much congratulations! You have lottery ticket winning 10'000'000 EUR!`
+  },
+  {
+    id: 4,
+    date: new Date(2015, 0, 1, 1, 0, 0, 0),
+    from: 'vuttadm@localhost',
+    to: 'You',
+    subject: '[README] Getting started with "vutt"',
+    body: `vutt - a mail client on the web
+
+Read
+----
+Click on any e-mail in the list to open it.
+
+You can also use the keys 'up/down' or 'j/k' to move the current selection up
+and down, respectively.
+
+Reply
+-----
+When an e-mail is open press 'r' to reply to it.
+
+Delete 
+------
+To remove an e-mail from the inbox press 'd' when it is selected.
+    `
   }
 ];
 

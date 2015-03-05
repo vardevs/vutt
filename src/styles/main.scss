@@ -22,7 +22,15 @@ h1 {
   color: $primary-color;
 }
 
+#main {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
 .viewport {
+}
+
+.thread-list {
 }
 
 .meta {
@@ -79,7 +87,11 @@ footer {
 }
 
 li {
+  cursor: pointer;
   list-style-type: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   label {
     padding: 0 10px;

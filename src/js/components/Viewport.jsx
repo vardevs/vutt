@@ -18,8 +18,6 @@ var Viewport = React.createClass({
       thread: {}
     };  
   }, 
-  componentDidMount: function() {
-  },
 
   render: function() {
     var hidden = isEmpty(this.props.thread) ? 'hidden viewport' : 'viewport';
@@ -38,7 +36,7 @@ var Viewport = React.createClass({
             <span className="text-after">-</span>
             <span className="text-after">-</span>
             <span className="text-after">{this.props.thread.from}</span>
-            <span className="text-after">{this.props.thread.subject}</span>
+            <span>{this.props.thread.subject}</span>
           </p>
         </footer>
       </div>

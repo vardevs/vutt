@@ -20,7 +20,7 @@ var ThreadList = React.createClass({
         <footer>
           <p>
             <span className="">
-              ---vardevs-mail: =Inbox [Msgs:{this.props.threads.length}]---(threads)---
+              ---vutt: =Inbox [Msgs:{this.props.threads.length}]---(threads)---
             </span>
           </p>
         </footer>
