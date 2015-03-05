@@ -41,22 +41,24 @@ called «vardevs».
 Just hit 'r' or click on 'r:Reply' at the top to get in touch!
 
 /v.
-`
-  },
-  {
-    id: 2,
-    date: new Date(2015, 3, 3, 18, 0, 0, 0),
-    from: 'viktor@vardevs.se',
-    to: 'You',
-    subject: 'Curriculum Vitae',
-    body: `Hi
+`,
+    children: [
+        {
+        id: 2,
+        date: new Date(2015, 3, 3, 18, 0, 0, 0),
+        from: 'viktor@vardevs.se',
+        to: 'You',
+        subject: 'Curriculum Vitae',
+        body: `Hi
 
 Just thought I would drop you a link to my CV: 
 
   https://github.com/varl/cv
 
 /v.
-`
+    `
+      }
+    ]
   },
   {
     id: 3,

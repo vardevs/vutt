@@ -7,7 +7,8 @@ var Thread = React.createClass({
   getDefaultProps: function() {
     return {
       thread: {},
-      active: {}
+      active: {},
+      prefix: ''
     };
   },
 
@@ -23,12 +24,25 @@ var Thread = React.createClass({
   },
 
   render: function() {
+    var children = [];
+    if (this.props.thread.children) {
+      children = this.props.thread.children.map(thread =>
+        <Thread thread={thread} active={this.props.active} prefix="  └>"/>
+      );
+    }
+    var title = this.props.prefix || this.props.thread.subject;
     return (
-      <li onClick={this._onClick} className={this.process()}>
-        <span className="align-right text-after">{this.props.thread.id}</span>
-        <span className="text-after">{this.props.thread.date.toUTCString()}</span>
-        <span className="text-after">{this.props.thread.from}</span>
-        <span className="text-after">{this.props.thread.subject}</span>
+      <li>
+        <div onClick={this._onClick} className={this.process()}>
+          <span className="align-right text-after">{this.props.thread.id}</span>
+          <span className="text-after">{this.props.thread.date.toUTCString()}</span>
+          <span className="text-after">{this.props.thread.from}</span>
+          <span className="text-after">{title}</span>
+        </div>
+
+        <ul>
+          {children}
+        </ul>
       </li>
     );
   }
