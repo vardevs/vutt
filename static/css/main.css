@@ -16,8 +16,8 @@ h1 {
   color: green;
 }
 
-#main {
-  max-width: 90%;
+#root {
+  max-width: 90vw;
   margin: 0 auto;
 }
 
@@ -29,10 +29,11 @@ h1 {
 
 .meta {
   color: turquoise;
-  p {
-    margin: 0;
-    padding: 0;
-  }
+}
+
+.meta p {
+  margin: 0;
+  padding: 0;
 }
 
 p.attachment {
@@ -70,7 +71,6 @@ pre {
 ul {
   margin: 0;
   padding: 0;
-  max-height: $line-height * 5;
   overflow-y: auto;
 }
 
@@ -87,9 +87,10 @@ li {
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  label {
-    padding: 0 10px;
-  }
+}
+
+li label {
+  padding: 0 10px;
 }
 
 .active-thread {
