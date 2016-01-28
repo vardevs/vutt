@@ -10,11 +10,14 @@
     "redux": "^3.0.6"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.3.13"
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^13.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d static/js"
+    "build": "browserify src/index.jsx -o static/js/index.js -t [ babelify --presets [ es2015 react ] ]"
   },
   "repository": {
     "type": "git",
