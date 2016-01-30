@@ -20119,27 +20119,19 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.openEmail = openEmail;
+exports.activateEmail = activateEmail;
 /*
  * action types
  */
 
-var OPEN_EMAIL = exports.OPEN_EMAIL = 'OPEN_EMAIL';
-
-/*
- * other constants
- */
-
-var VisibilityFilters = exports.VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL'
-};
+var ACTIVATE_EMAIL = exports.ACTIVATE_EMAIL = 'ACTIVATE_EMAIL';
 
 /*
  * action creators
  */
 
-function openEmail(id) {
-  return { type: OPEN_EMAIL, id: id };
+function activateEmail(id) {
+  return { type: ACTIVATE_EMAIL, id: id };
 }
 
 },{}],178:[function(require,module,exports){
@@ -20177,27 +20169,27 @@ var Email = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         "li",
-        {
+        { className: this.props.active ? "thread-active" : "",
           onClick: this.props.onClick },
         _react2.default.createElement(
           "span",
-          { className: "align-right text-after" },
+          { className: "align-right index text-after" },
           this.props.id
         ),
         _react2.default.createElement(
           "span",
-          { className: "text-after" },
-          this.props.date.toUTCString()
-        ),
-        _react2.default.createElement(
-          "span",
-          { className: "text-after" },
+          { className: "from text-after" },
           this.props.from
         ),
         _react2.default.createElement(
           "span",
-          { className: "text-after" },
+          { className: "subject text-after" },
           this.props.subject
+        ),
+        _react2.default.createElement(
+          "span",
+          { className: "date text-after" },
+          this.props.date.toUTCString()
         )
       );
     }
@@ -20214,8 +20206,7 @@ Email.propTypes = {
   body: _react.PropTypes.string.isRequired,
   from: _react.PropTypes.string.isRequired,
   to: _react.PropTypes.string.isRequired,
-  subject: _react.PropTypes.string.isRequired,
-  active: _react.PropTypes.boolean.isRequired
+  subject: _react.PropTypes.string.isRequired
 };
 
 },{"react":167}],179:[function(require,module,exports){
@@ -20260,17 +20251,41 @@ var EmailList = function (_Component) {
       var _this2 = this;
 
       return _react2.default.createElement(
-        'ul',
-        null,
-        this.props.emails.map(function (email) {
-          return _react2.default.createElement(_Email2.default, _extends({
-            key: email.id
-          }, email, {
-            onClick: function onClick() {
-              return _this2.props.onEmailClick(email.id);
-            } }));
-        })
+        'div',
+        { className: 'thread-list' },
+        _react2.default.createElement(
+          'ul',
+          null,
+          this.props.emails.map(function (email) {
+            return _react2.default.createElement(_Email2.default, _extends({
+              key: email.id
+            }, email, {
+              onClick: function onClick() {
+                return _this2.handleClick(email.id);
+              } }));
+          })
+        ),
+        _react2.default.createElement(
+          'footer',
+          null,
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+              'span',
+              null,
+              '---vutt: =Inbox [Msgs:',
+              this.props.emails.length,
+              ']---(threads)---'
+            )
+          )
+        )
       );
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick(id) {
+      this.props.onEmailClick(id);
     }
   }]);
 
@@ -20285,14 +20300,14 @@ EmailList.propTypes = {
     id: _react.PropTypes.number.isRequired,
     body: _react.PropTypes.string.isRequired,
     from: _react.PropTypes.string.isRequired,
+    date: _react.PropTypes.instanceOf(Date).isRequired,
     to: _react.PropTypes.string.isRequired,
-    subject: _react.PropTypes.string.isRequired,
-    active: _react.PropTypes.boolean.isRequired
+    subject: _react.PropTypes.string.isRequired
   }).isRequired).isRequired
 };
 
 },{"./Email":178,"react":167}],180:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -20300,7 +20315,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require('react');
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -20322,38 +20337,82 @@ var Viewport = function (_Component) {
   }
 
   _createClass(Viewport, [{
-    key: 'renderFilter',
-    value: function renderFilter(filter, name) {
-      var _this2 = this;
-
-      if (filter === this.props.filter) {
-        return name;
-      }
-
+    key: "render",
+    value: function render() {
+      var email = this.props.emails.filter(function (email) {
+        return email.active;
+      })[0] || { active: false };
+      var hidden = !email.active ? "hidden" : "";
       return _react2.default.createElement(
-        'a',
-        { href: '#', onClick: function onClick(e) {
-            e.preventDefault();
-            _this2.props.onFilterChange(filter);
-          } },
-        name
+        "div",
+        { className: hidden },
+        _react2.default.createElement(
+          "div",
+          { className: "meta" },
+          _react2.default.createElement(
+            "p",
+            null,
+            "Date: ",
+            this.formatDate(email.date)
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            "From: ",
+            email.from
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            "To: ",
+            email.to
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            "Subject: ",
+            email.subject
+          )
+        ),
+        _react2.default.createElement(
+          "pre",
+          null,
+          email.body
+        ),
+        _react2.default.createElement(
+          "footer",
+          null,
+          _react2.default.createElement(
+            "p",
+            null,
+            _react2.default.createElement(
+              "span",
+              { className: "text-after" },
+              "-"
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "text-after" },
+              "-"
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "text-after" },
+              email.from
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "text-after" },
+              email.subject
+            )
+          )
+        )
       );
     }
   }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'p',
-        null,
-        'Show:',
-        ' ',
-        this.renderFilter('SHOW_ALL', 'All'),
-        ', ',
-        this.renderFilter('SHOW_COMPLETED', 'Completed'),
-        ', ',
-        this.renderFilter('SHOW_ACTIVE', 'Active'),
-        '.'
-      );
+    key: "formatDate",
+    value: function formatDate(date) {
+      return date ? date.toUTCString() : "";
     }
   }]);
 
@@ -20363,8 +20422,14 @@ var Viewport = function (_Component) {
 exports.default = Viewport;
 
 Viewport.propTypes = {
-  onFilterChange: _react.PropTypes.func.isRequired,
-  filter: _react.PropTypes.oneOf(['SHOW_ALL', 'SHOW_COMPLETED', 'SHOW_ACTIVE']).isRequired
+  emails: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+    id: _react.PropTypes.number.isRequired,
+    body: _react.PropTypes.string.isRequired,
+    from: _react.PropTypes.string.isRequired,
+    date: _react.PropTypes.instanceOf(Date).isRequired,
+    to: _react.PropTypes.string.isRequired,
+    subject: _react.PropTypes.string.isRequired
+  }).isRequired).isRequired
 };
 
 },{"react":167}],181:[function(require,module,exports){
@@ -20388,9 +20453,9 @@ var _EmailList = require('../components/EmailList');
 
 var _EmailList2 = _interopRequireDefault(_EmailList);
 
-var _viewport = require('../components/viewport');
+var _Viewport = require('../components/Viewport');
 
-var _viewport2 = _interopRequireDefault(_viewport);
+var _Viewport2 = _interopRequireDefault(_Viewport);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20415,8 +20480,7 @@ var App = function (_Component) {
       // Injected by connect() call:
       var _props = this.props;
       var dispatch = _props.dispatch;
-      var visibleEmails = _props.visibleEmails;
-      var visibilityFilter = _props.visibilityFilter;
+      var emails = _props.emails;
 
       return _react2.default.createElement(
         'div',
@@ -20465,15 +20529,12 @@ var App = function (_Component) {
           )
         ),
         _react2.default.createElement(_EmailList2.default, {
-          emails: visibleEmails,
+          emails: emails,
           onEmailClick: function onEmailClick(id) {
-            return dispatch((0, _actions.openEmail)(id));
+            return dispatch((0, _actions.activateEmail)(id));
           } }),
-        _react2.default.createElement(_viewport2.default, {
-          filter: visibilityFilter,
-          onFilterChange: function onFilterChange(nextFilter) {
-            return dispatch((0, _actions.setVisibilityFilter)(nextFilter));
-          } })
+        _react2.default.createElement(_Viewport2.default, {
+          emails: emails })
       );
     }
   }]);
@@ -20482,44 +20543,27 @@ var App = function (_Component) {
 }(_react.Component);
 
 App.propTypes = {
-  visibleEmails: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+  dispatch: _react.PropTypes.func.isRequired,
+  emails: _react.PropTypes.arrayOf(_react.PropTypes.shape({
     body: _react.PropTypes.string.isRequired,
     from: _react.PropTypes.string.isRequired,
     to: _react.PropTypes.string.isRequired,
+    date: _react.PropTypes.instanceOf(Date),
     subject: _react.PropTypes.string.isRequired,
-    active: _react.PropTypes.boolean.isRequired
-  }).isRequired).isRequired,
-  visibilityFilter: _react.PropTypes.oneOf(['SHOW_ALL', 'SHOW_COMPLETED', 'SHOW_ACTIVE']).isRequired
+    active: _react.PropTypes.bool.isRequired
+  }).isRequired).isRequired
 };
-
-function selectEmails(emails, filter) {
-  switch (filter) {
-    case _actions.VisibilityFilters.SHOW_ALL:
-      return emails;
-    case _actions.VisibilityFilters.SHOW_COMPLETED:
-      return emails.filter(function (email) {
-        return email.active;
-      });
-    case _actions.VisibilityFilters.SHOW_ACTIVE:
-      return emails.filter(function (email) {
-        return !email.completed;
-      });
-  }
-}
 
 // Which props do we want to inject, given the global state?
 // Note: use https://github.com/faassen/reselect for better performance.
 function select(state) {
-  return {
-    visibleEmails: selectEmails(state.emails, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
-  };
+  return state;
 }
 
 // Wrap the component to inject dispatch and state into it
 exports.default = (0, _reactRedux.connect)(select)(App);
 
-},{"../actions":177,"../components/EmailList":179,"../components/viewport":180,"react":167,"react-redux":5}],182:[function(require,module,exports){
+},{"../actions":177,"../components/EmailList":179,"../components/Viewport":180,"react":167,"react-redux":5}],182:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20542,31 +20586,7 @@ var _reducers2 = _interopRequireDefault(_reducers);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var emails = { "visibilityFilter": "SHOW_ALL", "emails": [{
-    id: 1,
-    date: new Date(2015, 3, 3, 13, 52, 0, 0),
-    from: 'viktor@vardevs.se',
-    to: 'you@you.com',
-    subject: 'About vardevs',
-    body: 'Hey friend\n\nLet me give you the short rundown of a small software development company\ncalled «vardevs».\n\n- Freelance\n  ---------\n  Available for work on a per project basis.\n\n  TL;DR Experienced software engineer with a knack for Front-End and\n        Back-End web development.\n\n        Portfolio centers around web design and development using:\n        HTML, CSS, Javascript, Java, Python.\n\n  A more exhaustive CV complete with buzzwords should be in your inbox. ;-)\n\n- Operations\n  ----------\n  Provides end-to-end care for your solutions.\n\n  - VPS: Virtual private servers\n  - Web-hosting\n  - Hosted Zimbra/Outlook e-mail\n  - DNS: Domain name management (order/renewal/transfer)\n  - CDN: Content delivery networks\n\nIf you need anything, I am always available at «viktor@vardevs.se».\n\n/v.\n'
-  }, {
-    id: 2,
-    date: new Date(2015, 3, 3, 18, 0, 0, 0),
-    from: 'viktor@vardevs.se',
-    to: 'you@you.com',
-    subject: 'Curriculum Vitae',
-    body: 'Hi\n\nJust thought I would drop you a link to my CV:\n\n  https://github.com/varl/cv\n\n/v.\n'
-  }, {
-    id: 3,
-    date: new Date(2015, 3, 3, 12, 52, 0, 0),
-    from: 'asdu281@yahoo.com',
-    to: 'you@you.com',
-    subject: '[SPAM] FW: Rich man',
-    body: 'Compliments to you Rick Man!\n\nVery much congratulations! You have lottery ticket winning 10\'000\'000 EUR!'
-  }]
-};
-
-var store = (0, _redux.createStore)(_reducers2.default, emails);
+var store = (0, _redux.createStore)(_reducers2.default);
 
 var rootElement = document.getElementById('root');
 (0, _reactDom.render)(_react2.default.createElement(
@@ -20578,8 +20598,6 @@ var rootElement = document.getElementById('root');
 },{"./containers/App":181,"./reducers":183,"react":167,"react-dom":2,"react-redux":5,"redux":173}],183:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -20588,51 +20606,50 @@ var _redux = require('redux');
 
 var _actions = require('./actions');
 
-var SHOW_ALL = _actions.VisibilityFilters.SHOW_ALL;
-
-function visibilityFilter() {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? SHOW_ALL : arguments[0];
-  var action = arguments[1];
-
-  switch (action.type) {
-    case _actions.SET_VISIBILITY_FILTER:
-      return action.filter;
-    default:
-      return state;
-  }
-}
-
-function email(state, action) {
-  switch (action.type) {
-    case OPEN_EMAIL:
-      if (state.id !== action.id) {
-        return state;
-      }
-
-      return _extends({}, state, {
-        active: true
-      });
-    default:
-      return state;
-  }
-}
+var initialState = [{
+  active: true,
+  id: 1,
+  date: new Date(2015, 3, 3, 13, 52, 0, 0),
+  from: 'viktor@vardevs.se',
+  to: 'you@you.com',
+  subject: 'About vardevs',
+  body: 'Hello friend\n\nLet me give you the short rundown of a small software development company\ncalled vardevs. The Internet is a wonderful place. vardevs helps you make\nthe most of it. :-)\n\n  Software Development\n  --------------------\n\n  TL;DR Experienced software engineer with a knack for Front-End and\n        Back-End web development.\n\n        Portfolio centers around web design and development using technologies\n        and tools such as: HTML, CSS, Javascript, Java, Python, Photoshop\n\n        Experience as Team Lead with a Lean Software Development (LSD)\n        approach.\n\n  Operations\n  ----------\n\n  - Hosted solutions for Web\n  - Hosted solutions for e-mail\n  - CDN: Content delivery networks\n  - DNS: Domain name management (order/renewal/transfer)\n  - VPS: Virtual private servers\n\nA more exhaustive CV complete with buzzwords should be in your inbox. ;-)\n\nIf you need anything, you can always reach me viktor@vardevs.se.\n\n/v.\n'
+}, {
+  active: false,
+  id: 2,
+  date: new Date(2015, 3, 3, 18, 0, 0, 0),
+  from: 'viktor@vardevs.se',
+  to: 'you@you.com',
+  subject: 'Curriculum Vitae',
+  body: 'Hi\n\nJust thought I would drop you a link to my CV:\n\n  https://github.com/varl/cv\n  https://no.linkedin.com/in/viktorvarland\n\n/v.\n'
+}, {
+  active: false,
+  id: 3,
+  date: new Date(2015, 3, 3, 12, 52, 0, 0),
+  from: 'asdu281@yahoo.com',
+  to: 'you@you.com',
+  subject: '[SPAM] FW: Rich man',
+  body: 'Compliments to you Rick Man!\n\nVery much congratulations! You have lottery ticket winning 10\'000\'000 EUR!'
+}];
 
 function emails() {
-  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
   var action = arguments[1];
 
   switch (action.type) {
-    case OPEN_EMAIL:
-      return state.map(function (t) {
-        return email(t, action);
+
+    case _actions.ACTIVATE_EMAIL:
+      return state.map(function (email) {
+        return email.id === action.id ? Object.assign({}, email, { active: true }) : Object.assign({}, email, { active: false });
       });
+
     default:
       return state;
+
   }
 }
 
 var vuttApp = (0, _redux.combineReducers)({
-  visibilityFilter: visibilityFilter,
   emails: emails
 });
 

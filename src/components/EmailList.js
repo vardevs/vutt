@@ -10,7 +10,7 @@ export default class EmailList extends Component {
 						<Email
 							key={email.id}
 							{...email}
-							onClick={() => this.props.onEmailClick(email.id)} />
+							onClick={() => this.handleClick(email.id)} />
 					)}
 				</ul>
 				<footer>
@@ -23,6 +23,10 @@ export default class EmailList extends Component {
  			</div>
     )
   }
+
+  handleClick(id) {
+    this.props.onEmailClick(id)
+  }
 }
 
 EmailList.propTypes = {
@@ -31,6 +35,7 @@ EmailList.propTypes = {
     id: PropTypes.number.isRequired,
     body: PropTypes.string.isRequired,
     from: PropTypes.string.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
     to: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired
   }).isRequired).isRequired

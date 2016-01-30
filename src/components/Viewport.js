@@ -2,34 +2,41 @@ import React, { Component, PropTypes } from 'react'
 
 export default class Viewport extends Component {
   render() {
+    const email = this.props.emails.filter(email => email.active)[0] || { active: false }
+    const hidden = !email.active ? "hidden" : ""
     return (
-      <div>
+      <div className={hidden}>
         <div className="meta">
-          <p>Date: {date.toUTCString()}</p>
-          <p>From: {this.props.email.from}</p>
-          <p>To: {this.props.email.to}</p>
-          <p>Subject: {this.props.email.subject}</p>
+          <p>Date: {this.formatDate(email.date)}</p>
+          <p>From: {email.from}</p>
+          <p>To: {email.to}</p>
+          <p>Subject: {email.subject}</p>
         </div>
-        <p><pre>{this.props.email.body}</pre></p>
+        <pre>{email.body}</pre>
         <footer>
         <p>
         <span className="text-after">-</span>
         <span className="text-after">-</span>
-        <span className="text-after">{this.props.email.from}</span>
-        <span className="text-after">{this.props.email.subject}</span>
+        <span className="text-after">{email.from}</span>
+        <span className="text-after">{email.subject}</span>
         </p>
         </footer>
       </div>
     )
   }
+
+  formatDate(date) {
+    return date ? date.toUTCString() : ""
+  }
 }
 
 Viewport.propTypes = {
-  showEmail: {
+  emails: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     body: PropTypes.string.isRequired,
     from: PropTypes.string.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
     to: PropTypes.string.isRequired,
     subject: PropTypes.string.isRequired
-  }
+  }).isRequired).isRequired
 }

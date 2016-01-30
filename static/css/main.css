@@ -1,12 +1,14 @@
 @import "./normalize.css";
 
 html {
-  font-size: 18px;
+  font-size: 10px;
+}
+
+* {
+  font-size: 1.8rem;
 }
 
 body {
-  font-size: 1rem;
-
   font-family: monospace;
   background-color: #181818;
   color: #eeeeee;
@@ -21,6 +23,12 @@ h1 {
   margin: 0 auto;
 }
 
+@media (min-width: 1200px) {
+  #root {
+    max-width: 60vw;
+  }
+}
+
 .viewport {
 }
 
@@ -29,6 +37,7 @@ h1 {
 
 .meta {
   color: turquoise;
+  margin: 0 0 3rem 0;
 }
 
 .meta p {
@@ -61,7 +70,7 @@ pre {
 }
 
 .text-after {
-  margin-right: 2em;
+  margin-right: 3rem;
 }
 
 .align-right {
@@ -86,14 +95,20 @@ li {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
 
+li:hover {
+  color: turquoise;
+}
+
+.index, .from, .date, .subject {
 }
 
 li label {
-  padding: 0 10px;
+  padding: 0 1rem;
 }
 
-.active-thread {
+li.thread-active {
   background-color: #eeeeee;
   color: #181818;
 }

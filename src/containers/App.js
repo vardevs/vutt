@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { openEmail } from '../actions'
+import { activateEmail } from '../actions'
 import EmailList from '../components/EmailList'
-import Viewport from '../components/viewport'
+import Viewport from '../components/Viewport'
 
 class App extends Component {
   render() {
     // Injected by connect() call:
-    const { dispatch, emails, email } = this.props
+    const { dispatch, emails } = this.props
     return (
       <div>
 				<header>
@@ -23,50 +23,34 @@ class App extends Component {
 				</header>
 
         <EmailList
-          emails={visibleEmails}
+          emails={emails}
           onEmailClick={id =>
-            dispatch(openEmail(id))
+            dispatch(activateEmail(id))
           } />
 
         <Viewport
-          email={showEmail}/>
+          emails={emails}/>
       </div>
     )
   }
 }
 
 App.propTypes = {
+  dispatch: PropTypes.func.isRequired,
  	emails: PropTypes.arrayOf(PropTypes.shape({
     body: PropTypes.string.isRequired,
     from: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
+    date: PropTypes.instanceOf(Date),
     subject: PropTypes.string.isRequired,
-    active: PropTypes.boolean.isRequired
-  }).isRequired).isRequired,
-	email: PropTypes.shape({
-    body: PropTypes.string.isRequired,
-    from: PropTypes.string.isRequired,
-    to: PropTypes.string.isRequired,
-    subject: PropTypes.string.isRequired,
-    active: PropTypes.boolean.isRequired
-  })
-}
-
-function selectEmails(emails) {
-	return emails
-}
-
-function selectEmail(email) {
-	return email
+    active: PropTypes.bool.isRequired
+  }).isRequired).isRequired
 }
 
 // Which props do we want to inject, given the global state?
 // Note: use https://github.com/faassen/reselect for better performance.
 function select(state) {
-  return {
-    visibleEmails: selectEmails(state.emails),
-		openEmail: selectEmail(state.email)
-  }
+  return state
 }
 
 // Wrap the component to inject dispatch and state into it

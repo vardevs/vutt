@@ -2,16 +2,12 @@
  * action types
  */
 
-export const OPEN_EMAIL = 'OPEN_EMAIL'
-
-/*
- * other constants
- */
+export const ACTIVATE_EMAIL = 'ACTIVATE_EMAIL'
 
 /*
  * action creators
  */
 
-export function openEmail(id) {
-    return { type: OPEN_EMAIL, id }
+export function activateEmail(id) {
+  return { type: ACTIVATE_EMAIL, id }
 }
